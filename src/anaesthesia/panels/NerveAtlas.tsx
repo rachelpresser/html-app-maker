@@ -1,4 +1,5 @@
 import { useState } from "react";
+import posthog from "posthog-js";
 import { T } from "../theme";
 import { NERVES } from "../data";
 
@@ -11,7 +12,7 @@ export function NerveAtlas() {
       <div className="pg-sub">{NERVES.length} blocks · Landmarks · US views · Dosing</div>
       <div className="nerve-grid">
         {NERVES.map((n) => (
-          <div key={n.id} className={`nc ${sel === n.id ? "on" : ""}`} onClick={() => setSel(sel === n.id ? null : n.id)}>
+          <div key={n.id} className={`nc ${sel === n.id ? "on" : ""}`} onClick={() => { const next = sel === n.id ? null : n.id; if (next) posthog.capture("nerve_block_viewed", { block: n.id }); setSel(next); }}>
             <div className="nc-icon">{n.icon}</div>
             <div className="nc-name">{n.name}</div>
             <div className="nc-region">{n.region}</div>

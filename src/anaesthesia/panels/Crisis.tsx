@@ -1,4 +1,5 @@
 import { useState } from "react";
+import posthog from "posthog-js";
 import { T } from "../theme";
 import { CRISES } from "../data";
 
@@ -50,11 +51,12 @@ export function Crisis() {
     <div>
       <div className="pg-title">Crisis Checklists</div>
       <div className="pg-sub">Tap to activate emergency protocol</div>
-      <div className="warn-box" style={{ marginBottom: 12 }}>⚠️ These checklists support decision-making. Always involve senior help early.</div>
+      <div className="warn-box" style={{ marginBottom: 8 }}>⚠️ These checklists support decision-making. Always involve senior help early.</div>
+      <div className="warn-box" style={{ marginBottom: 12, background: "#1a1f2e", borderColor: "#3a4a7a", color: "#a0b4e8" }}>🇩🇪 Protocols aligned with <strong>DGAI/AWMF guidelines</strong>. Local adaptations may apply — verify with your department SOP.</div>
       {LIST.map(({ k, title, sub }) => {
         const c = CRISES[k];
         return (
-          <div key={k} className="crisis-hero" style={{ background: `${c.col}10`, border: `1px solid ${c.col}44` }} onClick={() => setActive(k)}>
+          <div key={k} className="crisis-hero" style={{ background: `${c.col}10`, border: `1px solid ${c.col}44` }} onClick={() => { posthog.capture("crisis_activated", { crisis: k }); setActive(k); }}>
             <div className="ch-title" style={{ color: c.col }}>{title}</div>
             <div className="ch-sub" style={{ color: c.col }}>{sub}</div>
             <div style={{ marginTop: 7, display: "flex", gap: 5 }}>

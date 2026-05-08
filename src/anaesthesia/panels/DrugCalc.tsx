@@ -1,4 +1,5 @@
 import { useCallback, useState } from "react";
+import posthog from "posthog-js";
 import { T } from "../theme";
 import { DRUGS, type Drug } from "../data";
 
@@ -30,6 +31,7 @@ export function DrugCalc() {
     let maint: Result["maint"] = null;
     if (drug.maint) maint = { lo: +(drug.maint[0] * pf * w).toFixed(2), hi: +(drug.maint[1] * pf * w).toFixed(2), unit: drug.munit };
     setResult({ lo, hi: cappedHi, over: hi > drug.max, max: drug.max, unit: drug.unit, maint });
+    posthog.capture("dose_calculated", { drug: drug.name, weight: w, mode });
   }, [weight, mode]);
 
   if (sel) return (
@@ -99,7 +101,7 @@ export function DrugCalc() {
       <div className="card">
         <div className="card-hd">📋 {filtered.length} drugs</div>
         {filtered.map((d) => (
-          <div key={d.name} className="drug-row" onClick={() => { setSel(d); setResult(null); }}>
+          <div key={d.name} className="drug-row" onClick={() => { posthog.capture("drug_viewed", { drug: d.name }); setSel(d); setResult(null); }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
               <div><div className="drug-name">{d.name}</div><div className="drug-class">{d.class}</div></div>
               <div style={{ textAlign: "right" }}>
