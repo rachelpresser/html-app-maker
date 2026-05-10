@@ -134,3 +134,5 @@ select.inp { font-family: 'Outfit', sans-serif; font-size: 13px; cursor: pointer
 .srch-inp:focus { border-color: var(--ap-accent); }
 .srch-inp::placeholder { color: var(--ap-muted); }
 .div { height: 1px; background: var(--ap-border); margin: 13px 0; }
+
+input, select, textarea { touch-action: manipulation; font-size: 16px; }

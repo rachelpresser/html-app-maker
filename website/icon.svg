@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#112244"/>
+      <stop offset="100%" stop-color="#070b14"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="35%" cy="30%" r="60%">
+      <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.07"/>
+      <stop offset="100%" stop-color="#38bdf8" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1024" height="1024" rx="230" fill="url(#bg)"/>
+  <!-- Subtle glow overlay -->
+  <rect width="1024" height="1024" rx="230" fill="url(#glow)"/>
+  <!-- Border -->
+  <rect width="1024" height="1024" rx="230" fill="none" stroke="#2a4a7a" stroke-width="4" opacity="0.8"/>
+
+  <!--
+    Design centered at (512,512), scaled 14× from the original 68×68 viewBox.
+    Transform: translate(512,512) scale(14) translate(-34,-34)
+    Result: cross spans x 120–904, y 120–904 → 120 px margin on all sides.
+  -->
+  <g transform="translate(512,512) scale(14) translate(-34,-34)">
+    <!-- Medical cross – vertical bar -->
+    <rect x="24" y="6" width="20" height="56" rx="6" fill="#38bdf8" opacity="0.95"/>
+    <!-- Medical cross – horizontal bar -->
+    <rect x="6" y="24" width="56" height="20" rx="6" fill="#38bdf8" opacity="0.95"/>
+    <!-- Inner highlight – vertical -->
+    <rect x="27" y="9" width="14" height="50" rx="4" fill="#7dd3fc" opacity="0.2"/>
+    <!-- Inner highlight – horizontal -->
+    <rect x="9" y="27" width="50" height="14" rx="4" fill="#7dd3fc" opacity="0.2"/>
+    <!-- Syringe barrel -->
+    <rect x="46" y="8" width="7" height="18" rx="2" fill="#34d399" opacity="0.9"/>
+    <!-- Syringe needle -->
+    <rect x="49" y="4" width="1.5" height="6" rx="1" fill="#34d399"/>
+    <!-- Syringe plunger cap -->
+    <rect x="45" y="24" width="9" height="2" rx="1" fill="#34d399" opacity="0.7"/>
+  </g>
+</svg>

@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <title>AnaesthesiaPro Icon → PNG</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    /*
+      Canvas must be exactly 1024×1024 at the top of the page so that
+      Chrome headless --window-size=1024,1024 --screenshot captures it cleanly.
+    */
+    html, body { background: #070b14; }
+    canvas { display: block; width: 1024px; height: 1024px; }
+
+    /* Controls sit below the canvas — outside the 1024×1024 screenshot area */
+    .controls {
+      width: 1024px;
+      padding: 24px 32px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      background: #0d1526;
+      border-top: 1px solid #1e3a5f;
+    }
+    .controls p {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 13px;
+      color: #64748b;
+      flex: 1;
+    }
+    .controls button {
+      background: #38bdf8;
+      color: #070b14;
+      border: none;
+      border-radius: 9px;
+      padding: 11px 24px;
+      font-weight: 700;
+      font-size: 14px;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .controls button:hover { opacity: 0.85; }
+  </style>
+</head>
+<body>
+
+<canvas id="c" width="1024" height="1024"></canvas>
+
+<div class="controls">
+  <p id="status">Rendering icon on canvas…</p>
+  <button onclick="download()">Download icon-1024.png</button>
+</div>
+
+<script>
+(function () {
+  const canvas = document.getElementById('c');
+  const ctx = canvas.getContext('2d');
+  const W = 1024, H = 1024;
+
+  /* ── helpers ── */
+  function roundRect(x, y, w, h, r) {
+    ctx.beginPath();
+    ctx.moveTo(x + r, y);
+    ctx.lineTo(x + w - r, y);
+    ctx.arcTo(x + w, y,     x + w, y + r,     r);
+    ctx.lineTo(x + w, y + h - r);
+    ctx.arcTo(x + w, y + h, x + w - r, y + h, r);
+    ctx.lineTo(x + r, y + h);
+    ctx.arcTo(x,     y + h, x,     y + h - r, r);
+    ctx.lineTo(x, y + r);
+    ctx.arcTo(x, y,         x + r, y,         r);
+    ctx.closePath();
+  }
+
+  /* ── 1. background ── */
+  const bgGrad = ctx.createLinearGradient(0, 0, W, H);
+  bgGrad.addColorStop(0, '#112244');
+  bgGrad.addColorStop(1, '#070b14');
+  roundRect(0, 0, W, H, 230);
+  ctx.fillStyle = bgGrad;
+  ctx.fill();
+
+  /* subtle radial glow */
+  const glow = ctx.createRadialGradient(W * 0.35, H * 0.3, 0, W * 0.35, H * 0.3, W * 0.6);
+  glow.addColorStop(0, 'rgba(56,189,248,0.07)');
+  glow.addColorStop(1, 'rgba(56,189,248,0)');
+  roundRect(0, 0, W, H, 230);
+  ctx.fillStyle = glow;
+  ctx.fill();
+
+  /* border */
+  roundRect(2, 2, W - 4, H - 4, 228);
+  ctx.strokeStyle = 'rgba(42,74,122,0.8)';
+  ctx.lineWidth = 4;
+  ctx.stroke();
+
+  /* ── 2. icon design ──
+     Original viewBox: 68×68, centered at (34,34).
+     We place center at (512,512) and scale by 14.
+     Any point (px,py) → ((px-34)*14+512, (py-34)*14+512)
+  */
+  const S = 14, OX = 512, OY = 512, C = 34;
+  function tx(px) { return (px - C) * S + OX; }
+  function ty(py) { return (py - C) * S + OY; }
+  function ts(v)  { return v * S; }
+
+  /* medical cross – vertical */
+  ctx.globalAlpha = 0.95;
+  ctx.fillStyle = '#38bdf8';
+  roundRect(tx(24), ty(6), ts(20), ts(56), ts(6));
+  ctx.fill();
+
+  /* medical cross – horizontal */
+  roundRect(tx(6), ty(24), ts(56), ts(20), ts(6));
+  ctx.fill();
+
+  /* inner highlight – vertical */
+  ctx.globalAlpha = 0.2;
+  ctx.fillStyle = '#7dd3fc';
+  roundRect(tx(27), ty(9), ts(14), ts(50), ts(4));
+  ctx.fill();
+
+  /* inner highlight – horizontal */
+  roundRect(tx(9), ty(27), ts(50), ts(14), ts(4));
+  ctx.fill();
+
+  /* syringe barrel */
+  ctx.globalAlpha = 0.9;
+  ctx.fillStyle = '#34d399';
+  roundRect(tx(46), ty(8), ts(7), ts(18), ts(2));
+  ctx.fill();
+
+  /* syringe needle */
+  ctx.globalAlpha = 1;
+  roundRect(tx(49), ty(4), ts(1.5), ts(6), ts(1));
+  ctx.fill();
+
+  /* syringe plunger cap */
+  ctx.globalAlpha = 0.7;
+  roundRect(tx(45), ty(24), ts(9), ts(2), ts(1));
+  ctx.fill();
+
+  ctx.globalAlpha = 1;
+
+  document.getElementById('status').textContent =
+    '1024 × 1024 px · Click to save as icon-1024.png';
+})();
+
+function download() {
+  const canvas = document.getElementById('c');
+  const link = document.createElement('a');
+  link.download = 'icon-1024.png';
+  link.href = canvas.toDataURL('image/png');
+  link.click();
+}
+</script>
+</body>
+</html>
